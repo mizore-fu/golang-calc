@@ -7,7 +7,7 @@ import (
 )
 
 type Formula struct {
-	Formula []string `json:"formula"`
+	Values []string `json:"values"`
 }
 
 func main() {
@@ -21,13 +21,13 @@ func hello(c echo.Context) error {
 	return c.String(http.StatusOK, "hello world!!!")
 }
 
-//POST body: {"formula": ["1", "2", "+"]}
+//POST body: {"values": ["1", "2", "+"]}
 func receiveInput(c echo.Context) error {
-	jsonData := &Formula{}
-	if err := c.Bind(jsonData); err != nil {
+	formula := &Formula{}
+	if err := c.Bind(formula); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	formulaValues := jsonData.Formula
+	formulaValues := formula.Values
 
 	return c.JSON(http.StatusOK, formulaValues)
 }
