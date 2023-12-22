@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    container_name: golang-todo
+    container_name: golang-calc
     build:
       context: .
       dockerfile: Dockerfile
