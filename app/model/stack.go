@@ -11,17 +11,14 @@ func (s *Stack) Push(value string) {
 }
 
 func (s *Stack) Pop() (string, error) {
-	if err := s.IsNoData(); err != nil {
-		return "", err
+	if s.IsEmpty() {
+		return "", errors.New("ERROR")
 	}
 	value := s.values[len(s.values) - 1]
 	s.values = s.values[:len(s.values) - 1]
 	return value, nil
 }
 
-func (s *Stack) IsNoData() error {
-	if len(s.values) == 0 {
-		return errors.New("ERROR")
-	}
-	return nil
+func (s *Stack) IsEmpty() bool {
+	return len(s.values) == 0
 }
