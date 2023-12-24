@@ -18,17 +18,21 @@ func hello(c echo.Context) error {
 	return c.String(http.StatusOK, "hello world!!!")
 }
 
-//POST body: {"values": ["1", "2", "+"]}
+//POST body: {"values": ["1", "+", "2", "*", "3"]}
 func receiveInput(c echo.Context) error {
-	formula := &model.RPNFormula{}
+	formula := &model.Formula{}
 	if err := c.Bind(formula); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	value, err := formula.Calculate()
+	rpnFormula, err := formula.TranslateToRPNFormula()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+	result, err := rpnFormula.Calculate()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, &model.Response{Value: value})
+	return c.JSON(http.StatusOK, &model.Response{Value: result})
 }
