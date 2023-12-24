@@ -10,7 +10,7 @@ import (
 func main() {
 	e := echo.New()
 	e.GET("/", hello)
-	e.POST("/calc", receiveInput)
+	e.POST("/calc", calculate)
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
@@ -18,8 +18,8 @@ func hello(c echo.Context) error {
 	return c.String(http.StatusOK, "hello world!!!")
 }
 
-//POST body: {"values": ["1", "+", "2", "*", "3"]}
-func receiveInput(c echo.Context) error {
+//POST body: {"values": ["10", "+", "2", "*", "3"]}
+func calculate(c echo.Context) error {
 	formula := &model.Formula{}
 	if err := c.Bind(formula); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
