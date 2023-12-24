@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func calcTwoValues(firstNumber int, secondNumber int, operator string) int {
+func calcTwoValues(firstNumber int, secondNumber int, operator string) (int, error) {
 	var result int
 	switch operator {
 		case "+":
@@ -16,9 +16,12 @@ func calcTwoValues(firstNumber int, secondNumber int, operator string) int {
 		case "*":
 			result = firstNumber * secondNumber
 		case "/":
+			if secondNumber == 0 {
+				return 0, errors.New("division by 0")
+			}
 			result = firstNumber / secondNumber
 	}
-	return result
+	return result, nil
 }
 
 type RPNFormula struct {
@@ -46,7 +49,10 @@ func (rf *RPNFormula) Calculate() (int, error) {
 			}
 			secondNumber, _ := strconv.Atoi(secondStr)
 			firstNumber, _ := strconv.Atoi(firstStr)
-			result := calcTwoValues(firstNumber, secondNumber, operator)
+			result, err := calcTwoValues(firstNumber, secondNumber, operator)
+			if err != nil {
+				return 0, err
+			}
 			stack.Push(strconv.Itoa(result))
 			continue
 		}
