@@ -5,10 +5,13 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
 	e := echo.New()
+	e.Use(middleware.CORS())
+
 	e.GET("/", hello)
 	e.POST("/calc", calculate)
 	e.Logger.Fatal(e.Start(":8080"))
