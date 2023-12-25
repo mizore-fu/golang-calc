@@ -3,6 +3,8 @@ package main
 import (
 	"app/model"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -37,5 +39,7 @@ func calculate(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, &model.Response{Value: result})
+	resultStr := strconv.Itoa(result)
+	values := strings.SplitAfter(resultStr, "")
+	return c.JSON(http.StatusOK, &model.Response{Values: values})
 }

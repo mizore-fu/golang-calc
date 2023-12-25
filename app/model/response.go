@@ -1,5 +1,5 @@
 package model
 
 type Response struct {
-	Value int `json:"value"`
+	Values []string `json:"values"`
 }
